@@ -1,41 +1,36 @@
 # dwssr-2026b
 
-Proyecto de la materia de Desarrollo Web SSR.
+![Instituto Tecnológico de Gustavo A. Madero](logo.png.jpg)
 
-## Información del proyecto
+## Yoselin Morales Guadarrama
 
-Este repositorio contiene las actividades y prácticas realizadas durante la materia de Desarrollo Web SSR.
+### Desarrollo de Aplicaciones Web SSR
 
-## Entorno de desarrollo
+Proyecto de la materia de Desarrollo Web SSRgit add README.md
 
-Para el desarrollo del proyecto se utilizó:
+## Competencias a desarrollar
 
-- GitHub
-- GitHub Codespaces
-- Visual Studio Code
-- Dev Containers
-- Node.js
-- MongoDB
+- Uso de Git y GitHub.
+- Creación y administración de ramas.
+- Trabajo con repositorios.
+- Integración de cambios mediante merge.
+- Manejo de un entorno de desarrollo con Dev Container.
+- Desarrollo de aplicaciones web del lado del servidor.
 
-## Ramas del proyecto
+## Control de versiones
+
+### Rama main
 
 La rama `main` contiene la versión principal del proyecto.
 
-La rama `dev` se utiliza para realizar cambios y pruebas durante el desarrollo antes de integrarlos a `main`.
+### Rama dev
 
-## Conventional Commits y Gitmoji
+La rama `dev` se utilizó para realizar cambios y posteriormente integrarlos a `main`.
 
-Durante el desarrollo se pueden utilizar mensajes de commit estructurados para identificar fácilmente el tipo de cambio realizado.
+### Operación de Merge
 
-Algunos ejemplos son:
+Los cambios realizados en la rama `dev` fueron integrados posteriormente a la rama `main` mediante la operación de merge.
 
-- `feat:` para agregar una nueva funcionalidad.
-- `fix:` para corregir un error.
-- `docs:` para modificar documentación.
-- `refactor:` para realizar cambios en el código sin modificar su funcionamiento.
+## Proyecto
 
-También se pueden utilizar Gitmojis para identificar visualmente el propósito de cada commit.
-
-## Autora
-
-Yoselin Morales Guadarrama
+Este repositorio corresponde a las prácticas y actividades realizadas en la materia de Desarrollo Web SSR.
