@@ -1,23 +1,28 @@
+// FUNCION PAR MANEJAR ERRORES 
 var createError = require('http-errors');
+//IMPORTAA EL FRAMEWOR EXPRESS
 var express = require('express');
+//IMPORTA MODULOS PARA MANEJAAR RUTAS
 var path = require('path');
+//ES PRA LAS COOKIES
 var cookieParser = require('cookie-parser');
+//REGISTRAAA TODO LO QUE OCURRE EN EL SERVIDOR 
 var logger = require('morgan');
-
+//SE IMPORTAAN LAS RUTAS DE LA APLICACION 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+// CREA LA APLICACION EXPRESS
 var app = express();
 
-// view engine setup
+// CONFIGURI EXPRESS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
+//CONFIGURA LOS MIDLEWAVES
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..','public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
