@@ -7,7 +7,7 @@
 import app from '../app.js'
 
 // importando debug
-import createDebug from 'debug'
+import createDebug from "debug"
 import http from 'node:http'
 
 // creacion del debug

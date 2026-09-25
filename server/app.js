@@ -8,9 +8,13 @@ import path from 'node:path'
 import cookieParser from 'cookie-parser'
 //REGISTRAAA TODO LO QUE OCURRE EN EL SERVIDOR 
 import logger from 'morgan'
+//importnado bibliotec debug
+import createDebug from "debug" //👌
 //IMPORTS PARAA CREAR PP DIRNAAME
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
+// creacion del debug
+const debug = createDebug('dwssr-2026b:server')//👌
 //creando variables
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -18,6 +22,7 @@ const __dirname = dirname(__filename)
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
 // CREA LA APLICACION EXPRESS
+debug("🎆CREANDO BACKEND")
 var app = express();
 
 // CONFIGURI EXPRESS
@@ -28,8 +33,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+debug("❤️configurando carpeta de archivos estaaticos ")
 app.use(express.static(path.join(__dirname, '..','public')));
-
+debug("🚌registrando rutas")
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
