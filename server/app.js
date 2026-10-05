@@ -19,8 +19,9 @@ const debug = createDebug('dwssr-2026b:server')//👌
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 //SE IMPORTAAN LAS RUTAS DE LA APLICACION 
-import indexRouter from './routes/index.js'
-import usersRouter from './routes/users.js'
+import indexRouter from '#routes/index.js';
+import usersRouter from '#routes/users.js';
+
 // CREA LA APLICACION EXPRESS
 debug("🎆CREANDO BACKEND")
 var app = express();
