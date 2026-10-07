@@ -13,6 +13,8 @@ import createDebug from "debug" //👌
 //IMPORTS PARAA CREAR PP DIRNAAME
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
+//importando el TEMPLANTE ENGINE HADELBARS 
+import hbs from 'hbs'
 // creacion del debug
 const debug = createDebug('dwssr-2026b:server')//👌
 //creando variables
@@ -21,7 +23,8 @@ const __dirname = dirname(__filename)
 //SE IMPORTAAN LAS RUTAS DE LA APLICACION 
 import indexRouter from '#routes/index.js';
 import usersRouter from '#routes/users.js';
-
+//importanfo el regustrador de helper
+import { registerViteHelper } from './lib/vite.js'
 // CREA LA APLICACION EXPRESS
 debug("🎆CREANDO BACKEND")
 var app = express();
@@ -29,11 +32,17 @@ var app = express();
 // CONFIGURI EXPRESS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+//registro helper
+registerViteHelper(hbs)
 //CONFIGURA LOS MIDLEWAVES
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//archivos estaticos para produccion 
+if(process.env.NODE_ENV == 'production'){ 
+  app.use(express.static(path.join(__dirname, '..','d')));
+}
 debug("❤️configurando carpeta de archivos estaaticos ")
 app.use(express.static(path.join(__dirname, '..','public')));
 debug("🚌registrando rutas")
