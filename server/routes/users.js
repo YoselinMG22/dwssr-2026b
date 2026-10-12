@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res ) {
   res.send('<h1 style="color:pink"> lista de usuarios amigos🌟</h1>');
 });
 

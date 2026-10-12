@@ -7,7 +7,7 @@ const numbers = []
   
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res ) {
   counter++;
   numbers.push(counter);
 

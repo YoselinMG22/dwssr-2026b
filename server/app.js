@@ -1,5 +1,5 @@
-// FUNCION PAR MANEJAR ERRORES 
-import creteError from 'http-errors'
+// FUNCION PARA MANEJAR ERRORES
+import createError from 'http-errors';
 //IMPORTAA EL FRAMEWOR EXPRESS
 import express from 'express'
 //IMPORTA MODULOS PARA MANEJAAR RUTAS
@@ -40,22 +40,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //archivos estaticos para produccion 
-if(process.env.NODE_ENV == 'production'){ 
-  app.use(express.static(path.join(__dirname, '..','d')));
+if (process.env.NODE_ENV == 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'd')));
 }
 debug("❤️configurando carpeta de archivos estaaticos ")
-app.use(express.static(path.join(__dirname, '..','public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 debug("🚌registrando rutas")
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res ) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
