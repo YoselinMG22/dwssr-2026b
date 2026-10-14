@@ -8,7 +8,7 @@ router.get('/', function(req, res, _next) {
   res.render('index', { title: 'Express' });
   counter++;
   numbers.push(counter);
-  res.render('index', { title: 'Cruz Torres Ricardo', 
+  res.render('index', { title: 'MORLES GUDARRAMA YOSELIN', 
     counter,
     numbers
   });
