@@ -1,7 +1,8 @@
+/* Línea que informa a Tailwind dónde están las vistas de nuestra app */
 @import "tailwindcss";
 
-/* Línea que informa a Tailwind dónde están las vistas de nuestra app */
-@source "../../server/views/**/*.hbs";
+/* Indicando a Tailwind dónde están las vistas de nuestra aplicación */
+@source "../../server/views";
 /*
 body {
   padding: 50px;
