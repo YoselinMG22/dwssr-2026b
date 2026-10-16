@@ -16,14 +16,23 @@ export default defineConfig({
     plugins: [tailwindcss()],
 
     // Configuración del servidor de desarrollo
+
+    // Configuración del servidor de desarrollo
     server: {
         port: 5173,
         host: '0.0.0.0',
         cors: {
-            origin: true
+            origin: [
+                'http://localhost:3000',
+                'http://127.0.0.1:3000'
+            ]
         },
-        strictPort: true
+        strictPort: true,
+        hmr: {
+            host: 'localhost'
+        }
     },
+
 
     // Configuración de producción
     build: {

@@ -1,4 +1,3 @@
-
 import fs from 'node:fs';
 import path from 'node:path';
 import { dirname } from 'node:path';
@@ -13,16 +12,17 @@ export function viteAssets() {
     const isDev = process.env.NODE_ENV !== 'production';
 
     // URL del servidor de desarrollo de Vite
-    const viteDevServer =
-        process.env.VITE_DEV_SERVER ||
+    const viteDevServer = process.env.VITE_DEV_SERVER ||
         (
             process.env.CODESPACE_NAME &&
-            process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+                process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
                 ? `https://${process.env.CODESPACE_NAME}-5173.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
                 : 'http://localhost:5173'
         );
 
-    // Modo desarrollo
+    console.log('URL de Vite:', viteDevServer);
+
+    // Modo desarrollo          
     if (isDev) {
         return `
             <script type="module" src="${viteDevServer}/@vite/client"></script>
