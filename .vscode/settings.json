@@ -1,4 +1,3 @@
-
 {
   // Tamaño de la fuente del editor (px)
   "editor.fontSize": 25,
@@ -11,11 +10,9 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
 
-  // Corrección automática de ESLint al guardar
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
 
-  // Formatear al guardar
   "editor.formatOnSave": true
 }
