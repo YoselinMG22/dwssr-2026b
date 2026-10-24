@@ -1,6 +1,5 @@
 import fs from 'node:fs';
-import path from 'node:path';
-import { dirname } from 'node:path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // Obtener la ruta actual del archivo
@@ -62,21 +61,19 @@ export function viteAssets() {
     let tags = '';
 
     // Cargar los archivos CSS compilados
-    if (mainEntry.css) {
-        for (const cssFile of mainEntry.css) {
-            tags += `<link rel="stylesheet" href="/${cssFile}">\n`;
-        }
-    }
+if (mainEntry.css) {
+  mainEntry.css.forEach((cssFile) => {
+    tags += `<link rel="stylesheet" href="/${cssFile}">\n`;
+  });
+}
 
-    // Cargar el JavaScript compilado
-    tags += `<script type="module" src="/${mainEntry.file}"></script>`;
+// Cargar el JavaScript compilado
+tags += `<script type="module" src="/${mainEntry.file}"></script>`;
 
     return tags;
 }
 
 // Registrar el helper de Handlebars
 export function registerViteHelper(hbs) {
-    hbs.registerHelper('viteAssets', () => {
-        return new hbs.SafeString(viteAssets());
-    });
+    hbs.registerHelper('viteAssets', () => new hbs.SafeString(viteAssets()));
 }
