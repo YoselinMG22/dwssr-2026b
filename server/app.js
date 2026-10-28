@@ -1,4 +1,5 @@
- // FUNCION PARA MANEJAR ERRORES
+
+// FUNCION PARA MANEJAR ERRORES
 import createError from 'http-errors';
 //IMPORTAA EL FRAMEWOR EXPRESS
 import express from 'express';
@@ -7,7 +8,7 @@ import path, { dirname } from 'node:path';
 //ES PRA LAS COOKIES
 import cookieParser from 'cookie-parser';
 //REGISTRAAA TODO LO QUE OCURRE EN EL SERVIDOR
-import logger from 'morgan';
+import morgan from 'morgan';
 //importnado bibliotec debug
 import createDebug from 'debug'; //👌
 //IMPORTS PARAA CREAR PP DIRNAAME
@@ -17,6 +18,8 @@ import hbs from 'hbs';
 //SE IMPORTAAN LAS RUTAS DE LA APLICACION
 import indexRouter from '#routes/index.js';
 import usersRouter from '#routes/users.js';
+//IMPORTANDO WINSTON
+import logger from './lib/winston.js';
 //importanfo el regustrador de helper
 import { registerViteHelper } from './lib/vite.js';
 
@@ -31,6 +34,9 @@ const __dirname = dirname(__filename);
 debug('🎆CREANDO BACKEND');
 const app = express();
 
+// Registro de Winston
+logger.info('Creando aplicación Express');
+
 // CONFIGURI EXPRESS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -39,7 +45,7 @@ app.set('view engine', 'hbs');
 registerViteHelper(hbs);
 
 //CONFIGURA LOS MIDLEWAVES
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -67,6 +73,9 @@ app.use((req, res, next) => {
 // error handler
 app.use((err, req, res, _next) => {
   // set locals, only providing message in development
+  logger.error(err.stack || err.message);
+
+  // set locals, only providing message in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -81,7 +90,7 @@ app.use((err, req, res, _next) => {
 //return age
 //if (age === 10) {
 //console.log("codigo");
-  //}
+//}
 
 //})();
 

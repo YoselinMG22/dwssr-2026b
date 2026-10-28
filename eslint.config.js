@@ -1,3 +1,4 @@
+
 import { defineConfig, globalIgnores } from 'eslint/config';
 import js from '@eslint/js';
 import globals from 'globals';
@@ -35,7 +36,9 @@ export default defineConfig([
       sourceType: 'module',
     },
     settings: {
-      'import-x/resolver-next': [plugins.importX.plugins['import-x'].createNodeResolver()],
+      'import-x/resolver-next': [
+        plugins.importX.plugins['import-x'].createNodeResolver(),
+      ],
     },
   },
   ...airbnbBase,
@@ -51,7 +54,16 @@ export default defineConfig([
   },
   {
     rules: {
-      'no-underscore-dangle': ['error', { allow: ['__filename', '__dirname'] }],
+      'no-console': [
+        'warn',
+        {
+          allow: ['warn', 'error', 'info'],
+        },
+      ],
+      'no-underscore-dangle': [
+        'error',
+        { allow: ['__filename', '__dirname'] },
+      ],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       // Los alias "#server/*" y devDependencies de configuración
       // ESM en Node exige la extensión .js en imports relativos
