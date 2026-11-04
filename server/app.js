@@ -1,98 +1,105 @@
 
-// FUNCION PARA MANEJAR ERRORES
+// FUNCIÓN PARA MANEJAR ERRORES
 import createError from 'http-errors';
-//IMPORTAA EL FRAMEWOR EXPRESS
+
+// IMPORTA EL FRAMEWORK EXPRESS
 import express from 'express';
-//IMPORTA MODULOS PARA MANEJAAR RUTAS
+
+// IMPORTA MÓDULOS PARA MANEJAR RUTAS
 import path, { dirname } from 'node:path';
-//ES PRA LAS COOKIES
+
+// ES PARA LAS COOKIES
 import cookieParser from 'cookie-parser';
-//REGISTRAAA TODO LO QUE OCURRE EN EL SERVIDOR
+
+// REGISTRA TODO LO QUE OCURRE EN EL SERVIDOR
 import morgan from 'morgan';
-//importnado bibliotec debug
-import createDebug from 'debug'; //👌
-//IMPORTS PARAA CREAR PP DIRNAAME
+
+// IMPORTA MÓDULOS PARA CREAR __DIRNAME
 import { fileURLToPath } from 'node:url';
-//importando el TEMPLANTE ENGINE HADELBARS
-import hbs from 'hbs';
-//SE IMPORTAAN LAS RUTAS DE LA APLICACION
+
+// IMPORTA DEBUG
+import createDebug from 'debug';
+
+// SE IMPORTAN LAS RUTAS DE LA APLICACIÓN
 import indexRouter from '#routes/index.js';
 import usersRouter from '#routes/users.js';
-//IMPORTANDO WINSTON
+
+// IMPORTA WINSTON
 import logger from './lib/winston.js';
-//importanfo el regustrador de helper
-import { registerViteHelper } from './lib/vite.js';
 
-// creacion del debug
-const debug = createDebug('dwssr-2026b:server'); //👌
+// IMPORTA LA CONFIGURACIÓN DE HANDLEBARS
+import configureHandlebars from './lib/handlebars.js';
 
-//creando variables
+// CREACIÓN DEL DEBUG
+const debug = createDebug('dwssr-2026b:server');
+
+// CREANDO VARIABLES
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// CREA LA APLICACION EXPRESS
-debug('🎆CREANDO BACKEND');
+// CREAR LA APLICACIÓN EXPRESS
+logger.info('Creando backend');
 const app = express();
 
-// Registro de Winston
+// CONFIGURAR EL MOTOR DE VISTAS CON HBS
+configureHandlebars(app);
+
+// REGISTRO DE WINSTON
 logger.info('Creando aplicación Express');
 
-// CONFIGURI EXPRESS
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// CONFIGURAR LOS MIDDLEWARES
+app.use(
+  morgan('dev', {
+    stream: {
+      write: (msg) => logger.info(msg.trim()),
+    },
+  }),
+);
 
-//registro helper
-registerViteHelper(hbs);
-
-//CONFIGURA LOS MIDLEWAVES
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//archivos estaticos para produccion
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '..', 'dist')));
-}
+// ARCHIVOS ESTÁTICOS
+debug('Configurando carpeta de archivos estáticos');
 
-debug('❤️configurando carpeta de archivos estaaticos ');
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// 🆕 Archivos compilados por Vite
+// ARCHIVOS COMPILADOS POR VITE
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
-debug('🚌registrando rutas');
+// REGISTRANDO RUTAS
+debug('Registrando rutas');
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
+// CATCH 404 AND FORWARD TO ERROR HANDLER
 app.use((req, res, next) => {
   next(createError(404));
 });
 
-// error handler
+// ERROR HANDLER
 app.use((err, req, res, _next) => {
-  // set locals, only providing message in development
+  // SET LOCALS, ONLY PROVIDING MESSAGE IN DEVELOPMENT
   logger.error(err.stack || err.message);
 
-  // set locals, only providing message in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // RENDER THE ERROR PAGE
   res.status(err.status || 500);
   res.render('error');
 });
 
-//ejemplo de codigo inalcanzable
-//(() => {
-//let age = 10;
-//return age
-//if (age === 10) {
-//console.log("codigo");
-//}
+// EJEMPLO DE CÓDIGO INALCANZABLE
+// (() => {
+//   let age = 10;
+//   return age;
+//   if (age === 10) {
+//     console.log('codigo');
+//   }
+// })();
 
-//})();
-
-//module.exports = app;
+// EXPORTAR APLICACIÓN
 export default app;
