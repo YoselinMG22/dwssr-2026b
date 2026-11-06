@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import logger from './winston.js';
 
 // Obtener la ruta actual del archivo
 const __filename = fileURLToPath(import.meta.url);
@@ -8,72 +9,72 @@ const __dirname = dirname(__filename);
 
 // Generar las etiquetas de Vite para Handlebars
 export function viteAssets() {
-    const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = process.env.NODE_ENV !== 'production';
 
-    // URL del servidor de desarrollo de Vite
-    const viteDevServer = process.env.VITE_DEV_SERVER ||
-        (
-            process.env.CODESPACE_NAME &&
-                process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
-                ? `https://${process.env.CODESPACE_NAME}-5173.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
-                : 'http://localhost:5173'
-        );
+  // URL del servidor de desarrollo de Vite
+  const viteDevServer = process.env.VITE_DEV_SERVER ||
+    (
+      process.env.CODESPACE_NAME &&
+        process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+        ? `https://${process.env.CODESPACE_NAME}-5173.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
+        : 'http://localhost:5173'
+    );
 
-    console.log('URL de Vite:', viteDevServer);
+  logger.info(`URL de Vite: ${viteDevServer}`);
 
-    // Modo desarrollo          
-    if (isDev) {
-        return `
+  // Modo desarrollo          
+  if (isDev) {
+    return `
             <script type="module" src="${viteDevServer}/@vite/client"></script>
             <script type="module" src="${viteDevServer}/main.js"></script>
         `;
-    }
+  }
 
-    // Ruta del manifiesto generado por npm run build
-    const manifestPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'dist',
-        '.vite',
-        'manifest.json'
+  // Ruta del manifiesto generado por npm run build
+  const manifestPath = path.join(
+    __dirname,
+    '..',
+    '..',
+    'dist',
+    '.vite',
+    'manifest.json'
+  );
+
+  if (!fs.existsSync(manifestPath)) {
+    console.warn(
+      "No se encontró el manifiesto de Vite. Ejecuta 'npm run build'."
     );
+    return '';
+  }
 
-    if (!fs.existsSync(manifestPath)) {
-        console.warn(
-            "No se encontró el manifiesto de Vite. Ejecuta 'npm run build'."
-        );
-        return '';
-    }
+  // Leer el manifiesto
+  const manifest = JSON.parse(
+    fs.readFileSync(manifestPath, 'utf-8')
+  );
 
-    // Leer el manifiesto
-    const manifest = JSON.parse(
-        fs.readFileSync(manifestPath, 'utf-8')
-    );
+  const mainEntry = manifest['main.js'];
 
-    const mainEntry = manifest['main.js'];
+  if (!mainEntry) {
+    console.warn('No se encontró main.js en el manifiesto de Vite.');
+    return '';
+  }
 
-    if (!mainEntry) {
-        console.warn('No se encontró main.js en el manifiesto de Vite.');
-        return '';
-    }
+  let tags = '';
 
-    let tags = '';
+  // Cargar los archivos CSS compilados
+  if (mainEntry.css) {
+    mainEntry.css.forEach((cssFile) => {
+      tags += `<link rel="stylesheet" href="/${cssFile}">\n`;
+    });
+  }
 
-    // Cargar los archivos CSS compilados
-if (mainEntry.css) {
-  mainEntry.css.forEach((cssFile) => {
-    tags += `<link rel="stylesheet" href="/${cssFile}">\n`;
-  });
-}
+  // Cargar el JavaScript compilado
+  tags += `<script type="module" src="/${mainEntry.file}"></script>`;
 
-// Cargar el JavaScript compilado
-tags += `<script type="module" src="/${mainEntry.file}"></script>`;
-
-    return tags;
+  return tags;
 }
 
 // Registrar el helper de Handlebars
 export function registerViteHelper(hbs) {
-    hbs.registerHelper('viteAssets', () => new hbs.SafeString(viteAssets()));
+  hbs.registerHelper('viteAssets', () => new hbs.SafeString(viteAssets()));
 }

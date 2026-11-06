@@ -8,24 +8,20 @@ const __dirname = path.dirname(__filename);
 
 // Exportar la función de configuración
 export default function configureHandlebars(app) {
-
-  // Estableciendo la extensión de las vistas en .hbs
-  // Y estableciendo el layout principal en main
+  // Configurar Handlebars
   const exphbs = createHandlebars({
     extname: '.hbs',
     defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, '../views/layouts'),
   });
 
-  // Registrando el helper de Vite
+  // Registrar el helper de Vite
   registerViteHelper(exphbs.handlebars);
 
-  // Registrando Handlebars en Express
-  // 1. Registro el engine
+  // Registrar el motor de vistas en Express
   app.engine('hbs', exphbs.engine);
-
-  // 2. Registro el engine de vistas
   app.set('view engine', 'hbs');
 
-  // 3. Estableciendo la ubicación de las vistas
+  // Establecer la ubicación de las vistas
   app.set('views', path.join(__dirname, '../views'));
 }

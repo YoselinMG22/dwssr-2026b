@@ -65,10 +65,18 @@ export default defineConfig([
         { allow: ['__filename', '__dirname'] },
       ],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
       // Los alias "#server/*" y devDependencies de configuración
       // ESM en Node exige la extensión .js en imports relativos
       'import-x/extensions': ['error', 'ignorePackages'],
       'import-x/no-unresolved': ['error', { ignore: ['^#'] }],
+
+      // Permite usar explícitamente ./index.js en las rutas
+      'import-x/no-useless-path-segments': [
+        'error',
+        { noUselessIndex: false },
+      ],
+
       'import-x/no-extraneous-dependencies': [
         'error',
         { devDependencies: [] },

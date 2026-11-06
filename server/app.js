@@ -21,8 +21,8 @@ import { fileURLToPath } from 'node:url';
 import createDebug from 'debug';
 
 // SE IMPORTAN LAS RUTAS DE LA APLICACIÓN
-import indexRouter from '#routes/index.js';
-import usersRouter from '#routes/users.js';
+import router from './routes/index.js';
+import usersRouter from './routes/users.js';
 
 // IMPORTA WINSTON
 import logger from './lib/winston.js';
@@ -44,9 +44,6 @@ const app = express();
 // CONFIGURAR EL MOTOR DE VISTAS CON HBS
 configureHandlebars(app);
 
-// REGISTRO DE WINSTON
-logger.info('Creando aplicación Express');
-
 // CONFIGURAR LOS MIDDLEWARES
 app.use(
   morgan('dev', {
@@ -63,15 +60,18 @@ app.use(cookieParser());
 // ARCHIVOS ESTÁTICOS
 debug('Configurando carpeta de archivos estáticos');
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
 // ARCHIVOS COMPILADOS POR VITE
-app.use(express.static(path.join(__dirname, '..', 'dist')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
+}
+
+// ARCHIVOS ESTÁTICOS PÚBLICOS
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // REGISTRANDO RUTAS
 debug('Registrando rutas');
 
-app.use('/', indexRouter);
+app.use('/', router);
 app.use('/users', usersRouter);
 
 // CATCH 404 AND FORWARD TO ERROR HANDLER
@@ -94,11 +94,11 @@ app.use((err, req, res, _next) => {
 
 // EJEMPLO DE CÓDIGO INALCANZABLE
 // (() => {
-//   let age = 10;
-//   return age;
-//   if (age === 10) {
-//     console.log('codigo');
-//   }
+// let age = 10;
+// return age;
+// if (age === 10) {
+// console.log('codigo');
+// }
 // })();
 
 // EXPORTAR APLICACIÓN
