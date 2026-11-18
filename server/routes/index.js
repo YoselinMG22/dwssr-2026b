@@ -1,20 +1,3 @@
-import express from 'express';
+import homeRouter from '../module/home/home.routes.js';
 
-const router = express.Router();
-
-let counter = 0;
-const numbers = [];
-
-/* GET home page. */
-router.get('/', (req, res, _next) => {
-  counter += 1;
-  numbers.push(counter);
-
-  res.render('index', {
-    title: 'MORALES GUADARRAMA YOSELIN',
-    counter,
-    numbers,
-  });
-});
-
-export default router;
+export default homeRouter;

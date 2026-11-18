@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 import createDebug from 'debug';
 
 // SE IMPORTAN LAS RUTAS DE LA APLICACIÓN
-import router from './routes/index.js';
+import homeRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 
 // IMPORTA WINSTON
@@ -71,7 +71,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // REGISTRANDO RUTAS
 debug('Registrando rutas');
 
-app.use('/', router);
+app.use('/', homeRouter);
 app.use('/users', usersRouter);
 
 // CATCH 404 AND FORWARD TO ERROR HANDLER
