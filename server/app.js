@@ -21,9 +21,8 @@ import { fileURLToPath } from 'node:url';
 import createDebug from 'debug';
 
 // SE IMPORTAN LAS RUTAS DE LA APLICACIÓN
-import homeRouter from './routes/index.js';
+import { homeRouter, diagRouter } from './routes/index.js';
 import usersRouter from './routes/users.js';
-
 // IMPORTA WINSTON
 import logger from './lib/winston.js';
 
@@ -72,6 +71,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 debug('Registrando rutas');
 
 app.use('/', homeRouter);
+if (process.env.NODE_ENV !== 'production') { 
+  app.use('/', diagRouter);
+   }
 app.use('/users', usersRouter);
 
 // CATCH 404 AND FORWARD TO ERROR HANDLER
